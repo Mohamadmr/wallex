@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vending_machine_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - vending_machine_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: vending_machine_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./deployment/nginx:/etc/nginx/conf.d
+    networks:
+      - vending_machine_network
+
+networks:
+  vending_machine_network:
+    driver: bridge 
