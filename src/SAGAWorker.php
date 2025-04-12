@@ -2,10 +2,7 @@
 
 namespace src;
 
-use contracts\TransactionInterface;
-use src\exceptions\NotEnoughBalance;
-use src\exceptions\NotEnoughCount;
-use src\exceptions\ProductNotFound;
+use src\contracts\TransactionInterface;
 use src\states\DispensingState;
 use src\states\IDLEState;
 use src\states\ProductSelectedState;
@@ -41,7 +38,7 @@ class SAGAWorker
                 $vendingMachine->getCurrentState() instanceof DispensingState
             ) {
                 $workingVendingMachine[] = $vendingMachine;
-            };
+            }
         }
 
         $this->vendingMachines = $workingVendingMachine;

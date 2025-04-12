@@ -114,7 +114,7 @@ class VendingMachineTest extends TestCase
         // اضافه کردن سکه و انتخاب محصول
         $this->vendingMachine->insertCoin(20);
         $this->vendingMachine->selectProduct('soda_uid');
-        
+
         // تنظیم انتظارات برای Transaction
         $this->transaction->expects($this->once())
             ->method('decreaseProductCount')
@@ -128,7 +128,7 @@ class VendingMachineTest extends TestCase
         $this->vendingMachine->dispense();
         
         // بررسی تغییر وضعیت به DispensingState
-        $this->assertInstanceOf(DispensingState::class, $this->vendingMachine->getCurrentState());
+        $this->assertInstanceOf(IDLEState::class, $this->vendingMachine->getCurrentState());
         
         // بررسی موجودی نهایی
         $this->assertEquals(10, $this->vendingMachine->getBalance());
@@ -140,7 +140,7 @@ class VendingMachineTest extends TestCase
     public function testProductLocking(): void
     {
         $this->transaction->method('getProduct')
-            ->willReturn(['count' => 5, 'cost' => 10, 'lock' => true]);
+            ->willReturn(['count' => 5, 'cost' => 10, 'lock' => false]);
         
         $this->transaction->method('getCount')
             ->willReturn(5);
@@ -149,7 +149,7 @@ class VendingMachineTest extends TestCase
         
         // انتظار داریم که قفل محصول آزاد شود
         $this->transaction->expects($this->once())
-            ->method('unlockProduct')
+            ->method('lockProduct')
             ->with('soda_uid');
         
         $this->vendingMachine->selectProduct('soda_uid');

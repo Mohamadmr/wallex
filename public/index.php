@@ -25,11 +25,12 @@ try {
         'message' => $exception->getMessage()
     ]);
 } catch (NotEnoughCount|NotEnoughBalance $exception) {
-    $vendingMachine->ejectCoin();
     echo json_encode([
         'status' => 'error',
         'message' => $exception->getMessage()
     ]);
 } finally {
     $vendingMachine->ejectCoin();
-} 
+
+    $worker->dropIDLEVendingMachines();
+}

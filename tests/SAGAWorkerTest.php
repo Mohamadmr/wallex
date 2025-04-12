@@ -64,6 +64,8 @@ class SAGAWorkerTest extends TestCase
         
         // تغییر وضعیت یکی از ماشین‌ها به ProductSelected
         $machines = $this->sagaWorker->getVendingMachines();
+
+        $machines[1]->insertCoin(10);
         $machines[1]->selectProduct('soda_uid');
         
         // حذف ماشین‌های IDLE
@@ -84,9 +86,12 @@ class SAGAWorkerTest extends TestCase
         $machines = $this->sagaWorker->getVendingMachines();
         
         // تغییر وضعیت ماشین‌ها
+        $machines[0]->insertCoin(10);
         $machines[0]->selectProduct('soda_uid');
+
+        $machines[1]->insertCoin(15);
         $machines[1]->selectProduct('cafe_uid');
-        
+
         // حذف ماشین‌های IDLE
         $this->sagaWorker->dropIDLEVendingMachines();
         

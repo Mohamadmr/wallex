@@ -27,5 +27,6 @@ class ProductSelectedState extends VendingMachineState
     {
         echo "Dispensing product...\n";
         $this->vendingMachine->setState(new DispensingState($this->vendingMachine));
+        $this->vendingMachine->dispense();
     }
 }

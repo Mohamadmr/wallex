@@ -15,6 +15,11 @@ abstract class VendingMachineState
     abstract public function selectProduct(): void;
     abstract public function dispense(): void;
 
+    public function getVendingMachine(): VendingMachine
+    {
+        return $this->vendingMachine;
+    }
+
     public function getStateName(): string
     {
         return $this->__toString();

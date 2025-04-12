@@ -42,6 +42,8 @@ class VendingMachine
      */
     public function selectProduct(string $productUid): void
     {
+        $retry = 5;
+
         $this->product = $this->transaction->getProduct($productUid);
 
         if ($this->product === null) {
@@ -58,6 +60,11 @@ class VendingMachine
 
         while ($this->product['lock']) {
             usleep(500);
+            $retry--;
+
+            if ($retry < 0) {
+                throw new ProductNotFound($productUid);
+            }
         }
 
         $this->transaction->lockProduct($productUid);
